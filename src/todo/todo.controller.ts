@@ -7,6 +7,6 @@ export class TodoController {
 
   @Get()
   findTodos(): string[] {
-    return ['hello', 'world'];
+    return this.todoService.getTodos();
   }
 }
