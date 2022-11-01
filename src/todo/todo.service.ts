@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TodoService {
-  getTodos() {
+  getTodos(): string[] {
     return ['hello', 'world'];
   }
 }
