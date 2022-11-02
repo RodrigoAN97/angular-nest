@@ -1,10 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'src/Dtos/createUser.dto';
+import { RegisterUserDto } from 'src/Dtos/registerUser.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { IUserResponse } from './user.types';
+import { LoginUserDto } from 'src/Dtos/loginUser.dto';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -13,7 +15,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<IUserResponse> {
+  async createUser(createUserDto: RegisterUserDto): Promise<IUserResponse> {
     const emailCheck = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -42,7 +44,7 @@ export class UserService {
     };
   }
 
-  generateToken(user: UserEntity): string {
+  private generateToken(user: UserEntity): string {
     return sign(
       {
         id: user.id,
@@ -51,5 +53,36 @@ export class UserService {
       },
       'todo list super secret',
     );
+  }
+
+  async login(loginUserDto: LoginUserDto): Promise<IUserResponse> {
+    const user = await this.userRepository.findOne({
+      where: { email: loginUserDto.email },
+    });
+
+    if (!user) {
+      throw new HttpException("Email doesn't exist", HttpStatus.UNAUTHORIZED);
+    }
+
+    const isPasswordCorrect = await compare(
+      loginUserDto.password,
+      user.password,
+    );
+
+    if (!isPasswordCorrect) {
+      throw new HttpException(
+        'Password is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    return {
+      user: {
+        id: user.id,
+        displayName: user.displayName,
+        email: user.email,
+        token: this.generateToken(user),
+      },
+    };
   }
 }
