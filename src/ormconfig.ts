@@ -8,5 +8,6 @@ export const ormconfig: PostgresConnectionOptions = {
   password: process.env.DATABASE_PASSWORD,
   database: 'todo_list',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: false,
+  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
 };
