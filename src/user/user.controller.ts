@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/Dtos/createUser.dto';
 import { UserService } from './user.service';
 import { IUserResponse } from './user.types';
@@ -8,6 +14,7 @@ export class UserController {
   constructor(private authService: UserService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   createUser(
     @Body('user') createUserDto: CreateUserDto,
   ): Promise<IUserResponse> {
