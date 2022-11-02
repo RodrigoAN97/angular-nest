@@ -4,10 +4,10 @@ import { AppService } from './app.service';
 import { TodoModule } from './todo/todo.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormconfig } from './ormconfig';
-import { AuthModule } from './user/user.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormconfig), TodoModule, AuthModule],
+  imports: [TypeOrmModule.forRoot(ormconfig), TodoModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })

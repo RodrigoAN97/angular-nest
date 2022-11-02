@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 import { hash } from 'bcrypt';
 
 @Entity({ name: 'users' })
-export class TodoEntity {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
