@@ -1,21 +1,13 @@
 <mat-toolbar color="primary">
   <span>Todo List</span>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with share icon"
-  >
+  <button mat-icon-button>
     <mat-icon>login</mat-icon>
   </button>
 </mat-toolbar>
 
 <mat-sidenav-container class="example-container">
   <mat-sidenav-content>
-    <form [formGroup]="loginForm">
-      <input formControlName="email" type="email" id="email" />
-      <input formControlName="password" type="password" />
-      <button (click)="login()">Login</button>
-    </form>
+    <app-todo></app-todo>
+    <app-auth></app-auth>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-todo></app-todo>
