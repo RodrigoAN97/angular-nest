@@ -45,7 +45,7 @@ export class AuthComponent implements OnInit, OnDestroy {
           this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBarService.error(err.message);
+          this.snackBarService.error(err.error.message);
         },
       });
   }
@@ -65,7 +65,7 @@ export class AuthComponent implements OnInit, OnDestroy {
           this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBarService.error(err.message);
+          this.snackBarService.error(err.error.message);
         },
       });
   }
