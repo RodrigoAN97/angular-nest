@@ -9,6 +9,6 @@ export interface IRegister {
   displayName: string;
 }
 
-export interface ILoginResponse {
+export interface IUserResponse {
   user: { displayName: string; email: string; id: number; token: string };
 }

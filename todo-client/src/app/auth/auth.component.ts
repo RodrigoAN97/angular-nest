@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { SnackBarService } from '../services/snack-bar.service';
 import { AuthService } from './auth.service';
-import { ILoginResponse } from './auth.types';
+import { IUserResponse } from './auth.types';
 
 @Component({
   selector: 'app-auth',
@@ -40,8 +40,8 @@ export class AuthComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
-          const response = res as ILoginResponse;
-          localStorage.setItem('user', JSON.stringify(response.user));
+          const response = res as IUserResponse;
+          localStorage.setItem('todo_user', JSON.stringify(response.user));
           this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {
@@ -60,7 +60,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
-          const response = res as ILoginResponse;
+          const response = res as IUserResponse;
           localStorage.setItem('todo_user', JSON.stringify(response.user));
           this.snackBarService.success("You're in!");
         },
