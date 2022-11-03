@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
@@ -43,7 +43,7 @@ export class TodoService {
     userId: number,
     listId: number,
     upsertTodosDto: UpsertTodosDto,
-  ) {
+  ): Promise<UpdateResult> {
     const list = await this.todoRepository.findOne({
       where: { user: { id: userId }, id: listId },
     });

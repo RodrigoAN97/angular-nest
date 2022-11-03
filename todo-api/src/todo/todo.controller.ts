@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
 import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
+import { UpdateResult } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { TodoService } from './todo.service';
 
@@ -43,7 +44,7 @@ export class TodoController {
     @Req() request: ExpressRequest,
     @Param('id') id: string,
     @Body('todos') upsertTodosDto: UpsertTodosDto,
-  ) {
+  ): Promise<UpdateResult> {
     return await this.todoService.updateTodoList(
       request.user.id,
       Number(id),
