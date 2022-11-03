@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SetTodosDto } from 'src/Dtos/setTodos.dto';
+import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
 export class TodoService {
@@ -12,5 +14,15 @@ export class TodoService {
 
   async getTodos(): Promise<TodoEntity[]> {
     return await this.todoRepository.find();
+  }
+
+  async setTodos(
+    setTodosDto: SetTodosDto,
+    user: UserEntity,
+  ): Promise<TodoEntity> {
+    const todoList = new TodoEntity();
+    Object.assign(todoList, setTodosDto);
+    todoList.user = user;
+    return await this.todoRepository.save(todoList);
   }
 }
