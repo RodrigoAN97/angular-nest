@@ -34,25 +34,7 @@ export class UserService {
     const newUser = new UserEntity();
     Object.assign(newUser, createUserDto);
     const user = await this.userRepository.save(newUser);
-    return {
-      user: {
-        id: user.id,
-        displayName: user.displayName,
-        email: user.email,
-        token: this.generateToken(user),
-      },
-    };
-  }
-
-  private generateToken(user: UserEntity): string {
-    return sign(
-      {
-        id: user.id,
-        displayName: user.displayName,
-        email: user.email,
-      },
-      'todo list super secret',
-    );
+    return this.getUserResponse(user);
   }
 
   async login(loginUserDto: LoginUserDto): Promise<IUserResponse> {
@@ -76,6 +58,14 @@ export class UserService {
       );
     }
 
+    return this.getUserResponse(user);
+  }
+
+  async getUserById(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  getUserResponse(user: UserEntity): IUserResponse {
     return {
       user: {
         id: user.id,
@@ -84,5 +74,16 @@ export class UserService {
         token: this.generateToken(user),
       },
     };
+  }
+
+  private generateToken(user: UserEntity): string {
+    return sign(
+      {
+        id: user.id,
+        displayName: user.displayName,
+        email: user.email,
+      },
+      'todo list super secret',
+    );
   }
 }
