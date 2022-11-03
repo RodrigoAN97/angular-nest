@@ -9,14 +9,14 @@ import { UserEntity } from 'src/user/user.entity';
 export class AuthMiddleware implements NestMiddleware {
   constructor(private userService: UserService) {}
 
-  async use(req: ExpressRequest, res: Response, next: NextFunction) {
-    console.log('authMiddleware', req.headers);
+  async use(req: ExpressRequest, _: Response, next: NextFunction) {
     if (!req.headers.authorization) {
       req.user = null;
       next();
+      return;
     }
 
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization.split(' ')[1];
     try {
       const decode = verify(token, 'todo list super secret') as UserEntity;
       const user = await this.userService.getUserById(decode.id);
