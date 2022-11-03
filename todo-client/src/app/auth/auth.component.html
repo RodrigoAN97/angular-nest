@@ -20,7 +20,7 @@
 <ng-template #register>
   <div>
     <h1>Register</h1>
-    <form [formGroup]="registerForm">
+    <form [formGroup]="registerForm" (submit)="login()">
       <mat-form-field appearance="fill">
         <mat-label>Display Name</mat-label>
         <input matInput formControlName="displayName" type="text" />
@@ -36,7 +36,7 @@
         <input matInput formControlName="password" type="password" />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="login()">Login</button>
+      <button mat-raised-button color="primary" type="submit">Login</button>
     </form>
     <p (click)="loginTemplate$.next(true)">Already have an account? Click here to login</p>
   </div>

@@ -8,3 +8,7 @@ export interface IRegister {
   password: string;
   displayName: string;
 }
+
+export interface ILoginResponse {
+  user: { displayName: string; email: string; id: number; token: string };
+}
