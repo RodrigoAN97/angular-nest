@@ -9,8 +9,8 @@ export class TodoController {
   constructor(private todoService: TodoService) {}
 
   @Get()
-  async getTodos(): Promise<TodoEntity[]> {
-    return await this.todoService.getTodos();
+  async getTodos(@Req() request: ExpressRequest): Promise<TodoEntity[]> {
+    return await this.todoService.getTodos(request.user.id);
   }
 
   @Post()

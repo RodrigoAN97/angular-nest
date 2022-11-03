@@ -12,8 +12,8 @@ export class TodoService {
     private todoRepository: Repository<TodoEntity>,
   ) {}
 
-  async getTodos(): Promise<TodoEntity[]> {
-    return await this.todoRepository.find();
+  async getTodos(userId: number): Promise<TodoEntity[]> {
+    return await this.todoRepository.find({ where: { user: { id: userId } } });
   }
 
   async setTodos(
