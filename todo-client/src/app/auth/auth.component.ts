@@ -42,10 +42,10 @@ export class AuthComponent implements OnInit, OnDestroy {
         next: (res) => {
           const response = res as ILoginResponse;
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.snackBarService.successSnackBar("You're in!");
+          this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBarService.errorSnackBar(err.message);
+          this.snackBarService.error(err.message);
         },
       });
   }
@@ -62,10 +62,10 @@ export class AuthComponent implements OnInit, OnDestroy {
         next: (res) => {
           const response = res as ILoginResponse;
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.snackBarService.successSnackBar("You're in!");
+          this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {
-          this.snackBarService.errorSnackBar(err.message);
+          this.snackBarService.error(err.message);
         },
       });
   }
