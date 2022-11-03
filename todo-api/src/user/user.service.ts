@@ -84,6 +84,7 @@ export class UserService {
         email: user.email,
       },
       'todo list super secret',
+      { expiresIn: '30m' },
     );
   }
 }
