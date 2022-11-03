@@ -10,8 +10,8 @@ import {
 import { RegisterUserDto } from 'src/Dtos/registerUser.dto';
 import { LoginUserDto } from 'src/Dtos/loginUser.dto';
 import { UserService } from './user.service';
-import { IUserResponse } from './user.types';
-import { ExpressRequest } from 'src/expressRequest.interface';
+import { IUserResponse } from '../interfaces/user.interfaces';
+import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
 import { AllowUnauthorizedRequest } from 'src/decorators/allowUnauthorizedRequest';
 
 @Controller('api/user')

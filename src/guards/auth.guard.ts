@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { ExpressRequest } from 'src/expressRequest.interface';
+import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
 
 export class AuthGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
