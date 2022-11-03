@@ -61,7 +61,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           const response = res as ILoginResponse;
-          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('todo_user', JSON.stringify(response.user));
           this.snackBarService.success("You're in!");
         },
         error: (err: HttpErrorResponse) => {

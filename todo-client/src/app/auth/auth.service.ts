@@ -20,5 +20,7 @@ export class AuthService {
     });
   }
 
-  logout() {}
+  logout() {
+    localStorage.setItem('todo_user', '');
+  }
 }
