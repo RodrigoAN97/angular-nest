@@ -1,26 +1,31 @@
+<div *ngIf="loginTemplate$ | async; then loginTemplate; else registerTemplate"></div>
 
-<div *ngIf="loginTemplate$ | async; else register">
-  <h1>Login</h1>
-  <form [formGroup]="loginForm">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" />
-    </mat-form-field>
+<ng-template #loginTemplate>
+  <div>
+    <h1>Login</h1>
+    <form [formGroup]="loginForm" (submit)="login()">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password" type="password" />
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" />
+      </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="login()">Login</button>
-  </form>
-  <p (click)="this.loginTemplate$.next(false)">Don't have an account yet? Click here to register</p>
-</div>
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    </form>
+    <p (click)="this.loginTemplate$.next(false)">
+      Don't have an account yet? Click here to register
+    </p>
+  </div>
+</ng-template>
 
-<ng-template #register>
+<ng-template #registerTemplate>
   <div>
     <h1>Register</h1>
-    <form [formGroup]="registerForm" (submit)="login()">
+    <form [formGroup]="registerForm" (submit)="register()">
       <mat-form-field appearance="fill">
         <mat-label>Display Name</mat-label>
         <input matInput formControlName="displayName" type="text" />
@@ -36,8 +41,10 @@
         <input matInput formControlName="password" type="password" />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit">Login</button>
+      <button mat-raised-button color="primary" type="submit">Register</button>
     </form>
-    <p (click)="loginTemplate$.next(true)">Already have an account? Click here to login</p>
+    <p (click)="loginTemplate$.next(true)">
+      Already have an account? Click here to login
+    </p>
   </div>
 </ng-template>

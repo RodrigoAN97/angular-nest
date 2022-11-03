@@ -34,10 +34,29 @@ export class AuthComponent implements OnInit, OnDestroy {
   login() {
     const email = this.loginForm.value.email as string;
     const password = this.loginForm.value.password as string;
-    console.log({ email, password });
 
     this.authService
       .login({ email, password })
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (res) => {
+          const response = res as ILoginResponse;
+          localStorage.setItem('user', JSON.stringify(response.user));
+          this.snackBarService.successSnackBar("You're in!");
+        },
+        error: (err: HttpErrorResponse) => {
+          this.snackBarService.errorSnackBar(err.message);
+        },
+      });
+  }
+
+  register() {
+    const email = this.registerForm.value.email as string;
+    const password = this.registerForm.value.password as string;
+    const displayName = this.registerForm.value.displayName as string;
+
+    this.authService
+      .register({ email, password, displayName })
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
