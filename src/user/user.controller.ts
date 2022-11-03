@@ -12,6 +12,7 @@ import { LoginUserDto } from 'src/Dtos/loginUser.dto';
 import { UserService } from './user.service';
 import { IUserResponse } from './user.types';
 import { ExpressRequest } from 'src/expressRequest.interface';
+import { AllowUnauthorizedRequest } from 'src/decorators/allowUnauthorizedRequest';
 
 @Controller('api/user')
 export class UserController {
@@ -23,6 +24,7 @@ export class UserController {
   }
 
   @Post('register')
+  @AllowUnauthorizedRequest()
   @UsePipes(new ValidationPipe())
   async createUser(
     @Body('user') createUserDto: RegisterUserDto,
@@ -31,6 +33,7 @@ export class UserController {
   }
 
   @Post('login')
+  @AllowUnauthorizedRequest()
   @UsePipes(new ValidationPipe())
   async Login(@Body('user') loginDto: LoginUserDto): Promise<IUserResponse> {
     return this.userService.login(loginDto);
