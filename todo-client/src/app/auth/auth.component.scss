@@ -1,0 +1,17 @@
+:host {
+  height: fit-content;
+  margin: auto;
+
+  div {
+    text-align: center;
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 18.75rem;
+    }
+    p {
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  }
+}

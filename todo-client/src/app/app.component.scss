@@ -2,3 +2,9 @@ mat-toolbar {
   display: flex;
   justify-content: space-between;
 }
+
+mat-sidenav-content {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 64px);
+}
