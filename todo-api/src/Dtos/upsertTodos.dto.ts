@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsArray } from 'class-validator';
 
-export class SetTodosDto {
+export class UpsertTodosDto {
   @IsNotEmpty()
   @IsArray()
   @IsString({ each: true })

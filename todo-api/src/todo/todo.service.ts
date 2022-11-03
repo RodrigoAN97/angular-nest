@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SetTodosDto } from 'src/Dtos/setTodos.dto';
+import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
 import { UserEntity } from 'src/user/user.entity';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class TodoService {
   }
 
   async setTodoList(
-    setTodosDto: SetTodosDto,
+    setTodosDto: UpsertTodosDto,
     user: UserEntity,
   ): Promise<TodoEntity> {
     const todoList = new TodoEntity();
@@ -37,5 +37,26 @@ export class TodoService {
     }
 
     return await this.todoRepository.remove(list);
+  }
+
+  async updateTodoList(
+    userId: number,
+    listId: number,
+    upsertTodosDto: UpsertTodosDto,
+  ) {
+    const list = await this.todoRepository.findOne({
+      where: { user: { id: userId }, id: listId },
+    });
+
+    if (!list) {
+      throw new HttpException('List not found', HttpStatus.NOT_FOUND);
+    }
+
+    list.todos = upsertTodosDto.todos;
+    return await this.todoRepository
+      .createQueryBuilder()
+      .update(list)
+      .where('id = :id', { id: listId })
+      .execute();
   }
 }
