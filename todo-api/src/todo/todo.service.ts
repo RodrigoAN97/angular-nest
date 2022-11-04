@@ -26,7 +26,7 @@ export class TodoService {
     return await this.todoRepository.save(todoList);
   }
 
-  async deleteTodoList(userId: number, listId: number): Promise<TodoEntity> {
+  async deleteTodoList(userId: number, listId: number): Promise<TodoEntity[]> {
     const list = await this.todoRepository.findOne({
       where: { user: { id: userId }, id: listId },
     });
@@ -36,7 +36,8 @@ export class TodoService {
       throw new HttpException('List not found', HttpStatus.NOT_FOUND);
     }
 
-    return await this.todoRepository.remove(list);
+    await this.todoRepository.remove(list);
+    return this.getAllTodoLists(userId);
   }
 
   async updateTodoList(
