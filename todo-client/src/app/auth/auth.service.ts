@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ILogin, IRegister } from './auth.types';
+import { ILogin, IRegister, IUser } from './auth.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  token!: string;
+  user!: IUser;
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(loginPayload: ILogin) {
@@ -29,10 +29,10 @@ export class AuthService {
 
   validateUser() {
     const stored = localStorage.getItem('todo_user') as string;
-    this.token = stored ? JSON.parse(stored).token : {};
+    this.user = stored ? JSON.parse(stored) : {};
 
     return this.httpClient.get(`http://localhost:3000/api/user`, {
-      headers: { authorization: `token ${this.token}` },
+      headers: { authorization: `token ${this.user.token}` },
     });
   }
 }

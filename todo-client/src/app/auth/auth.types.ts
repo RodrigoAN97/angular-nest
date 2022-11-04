@@ -10,5 +10,12 @@ export interface IRegister {
 }
 
 export interface IUserResponse {
-  user: { displayName: string; email: string; id: number; token: string };
+  user: IUser;
+}
+
+export interface IUser {
+  displayName: string;
+  email: string;
+  id: number;
+  token: string;
 }

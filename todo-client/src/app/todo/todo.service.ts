@@ -14,11 +14,10 @@ export class TodoService {
   ) {}
 
   getTodos(): Observable<ITodoResponse[]> {
-    console.log(this.authService.token);
     return this.httpClient.get<ITodoResponse[]>(
       `http://localhost:3000/api/todos`,
       {
-        headers: { authorization: `token ${this.authService.token}` },
+        headers: { authorization: `token ${this.authService.user.token}` },
       }
     );
   }
@@ -28,7 +27,7 @@ export class TodoService {
       `http://localhost:3000/api/todos/${id}`,
       { todos: { todos } },
       {
-        headers: { authorization: `token ${this.authService.token}` },
+        headers: { authorization: `token ${this.authService.user.token}` },
       }
     );
   }
@@ -38,7 +37,7 @@ export class TodoService {
       `http://localhost:3000/api/todos`,
       { todos: { todos: [] } },
       {
-        headers: { authorization: `token ${this.authService.token}` },
+        headers: { authorization: `token ${this.authService.user.token}` },
       }
     );
   }
@@ -47,7 +46,7 @@ export class TodoService {
     return this.httpClient.delete<ITodoResponse[]>(
       `http://localhost:3000/api/todos/${id}`,
       {
-        headers: { authorization: `token ${this.authService.token}` },
+        headers: { authorization: `token ${this.authService.user.token}` },
       }
     );
   }
