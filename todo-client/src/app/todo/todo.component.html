@@ -1,5 +1,8 @@
 <div id="actions-top">
-    <button (click)="addNewList()" mat-raised-button color="primary">Add new List</button>
+  <h1>{{ authService.user.displayName }}'s Lists</h1>
+  <button (click)="addNewList()" mat-raised-button color="primary">
+    Add new List
+  </button>
 </div>
 
 <mat-accordion *ngIf="todos$ | async as todos">

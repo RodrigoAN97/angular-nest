@@ -8,6 +8,7 @@ import {
   Subject,
   takeUntil,
 } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
@@ -23,7 +24,8 @@ export class TodoComponent implements OnInit {
   newItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(
     private todoService: TodoService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    public authService: AuthService
   ) {
     this.todos$ = this.getTodos();
   }

@@ -3,8 +3,10 @@
   padding: 2rem 0;
 
   #actions-top {
-    text-align: center;
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 
   .body {
