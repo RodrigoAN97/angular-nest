@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { SnackBarService } from '../services/snack-bar.service';
 import { AuthService } from './auth.service';
@@ -26,7 +27,8 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -42,7 +44,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         next: (res) => {
           const response = res as IUserResponse;
           localStorage.setItem('todo_user', JSON.stringify(response.user));
-          this.snackBarService.success("You're in!");
+          this.loggedInSuccess();
         },
         error: (err: HttpErrorResponse) => {
           this.snackBarService.error(err.error.message);
@@ -62,12 +64,17 @@ export class AuthComponent implements OnInit, OnDestroy {
         next: (res) => {
           const response = res as IUserResponse;
           localStorage.setItem('todo_user', JSON.stringify(response.user));
-          this.snackBarService.success("You're in!");
+          this.loggedInSuccess();
         },
         error: (err: HttpErrorResponse) => {
           this.snackBarService.error(err.error.message);
         },
       });
+  }
+
+  loggedInSuccess() {
+    this.snackBarService.success("You're in!");
+    this.router.navigate(['/']);
   }
 
   ngOnDestroy(): void {
