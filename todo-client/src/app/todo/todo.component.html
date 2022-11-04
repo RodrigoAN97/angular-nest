@@ -1,3 +1,7 @@
+<div id="actions-top">
+    <button (click)="addNewList()" mat-raised-button color="primary">Add new List</button>
+</div>
+
 <mat-accordion *ngIf="todos$ | async as todos">
   <mat-expansion-panel *ngFor="let list of todos; let i = index">
     <mat-expansion-panel-header>

@@ -53,7 +53,10 @@ export class TodoComponent implements OnInit {
     const item = todos[index];
 
     this.todoService
-      .updateTodos(listId, todos.filter((_, i) => i !== index))
+      .updateTodos(
+        listId,
+        todos.filter((_, i) => i !== index)
+      )
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
@@ -66,6 +69,14 @@ export class TodoComponent implements OnInit {
           this.snackBarService.error(err.error.message);
         },
       });
+  }
+
+  addNewList() {
+    const newList = this.todoService.addNewList();
+    
+    this.todos$ = combineLatest([this.todos$, newList]).pipe(
+      map(([todos, newList]) => [...todos, newList])
+    );
   }
 
   ngOnInit(): void {}

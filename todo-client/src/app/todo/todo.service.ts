@@ -32,4 +32,14 @@ export class TodoService {
       }
     );
   }
+
+  addNewList() {
+    return this.httpClient.post<ITodoResponse>(
+      `http://localhost:3000/api/todos`,
+      { todos: { todos: [] } },
+      {
+        headers: { authorization: `token ${this.authService.token}` },
+      }
+    );
+  }
 }
