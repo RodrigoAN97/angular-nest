@@ -17,6 +17,7 @@
       <div>
         <p *ngFor="let todo of list.todos; let itemIndex = index">
           <button
+            matTooltip="Delete item"
             (click)="deleteItem(list.id, itemIndex, list.todos)"
             mat-icon-button
           >
@@ -43,7 +44,7 @@
         </ng-container>
       </div>
       <div class="action">
-        <button (click)="newItem.next(true)" mat-icon-button>
+        <button matTooltip="Add new item" (click)="newItem.next(true)" mat-icon-button>
           <mat-icon>add</mat-icon>
         </button>
         <button (click)="deleteList(list.id)" mat-icon-button>
