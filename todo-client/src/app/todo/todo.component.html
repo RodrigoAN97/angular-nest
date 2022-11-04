@@ -44,11 +44,11 @@
         </ng-container>
       </div>
       <div class="action">
-        <button matTooltip="Add new item" (click)="newItem.next(true)" mat-icon-button>
-          <mat-icon>add</mat-icon>
+        <button (click)="newItem.next(true)" mat-raised-button color="primary">
+            Add New Item
         </button>
-        <button (click)="deleteList(list.id)" mat-icon-button>
-          <mat-icon>delete</mat-icon>
+        <button (click)="deleteList(list.id)" mat-raised-button color="warn">
+            Delete List
         </button>
       </div>
     </div>
