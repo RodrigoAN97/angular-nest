@@ -23,7 +23,7 @@ export class TodoService {
     );
   }
 
-  updateTodos(id: number, todos: string[]) {
+  updateTodos(id: number, todos: string[]): Observable<ITodoResponse> {
     return this.httpClient.put<ITodoResponse>(
       `http://localhost:3000/api/todos/${id}`,
       { todos: { todos } },
@@ -33,7 +33,7 @@ export class TodoService {
     );
   }
 
-  addNewList() {
+  addNewList(): Observable<ITodoResponse[]> {
     return this.httpClient.post<ITodoResponse[]>(
       `http://localhost:3000/api/todos`,
       { todos: { todos: [] } },
@@ -43,7 +43,7 @@ export class TodoService {
     );
   }
 
-  deleteList(id:number) {
+  deleteList(id: number): Observable<ITodoResponse[]> {
     return this.httpClient.delete<ITodoResponse[]>(
       `http://localhost:3000/api/todos/${id}`,
       {
