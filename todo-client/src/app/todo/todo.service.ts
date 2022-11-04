@@ -22,4 +22,14 @@ export class TodoService {
       }
     );
   }
+
+  updateTodos(id: number, todos: string[]) {
+    return this.httpClient.put(
+      `http://localhost:3000/api/todos/${id}`,
+      { todos: { todos } },
+      {
+        headers: { authorization: `token ${this.authService.token}` },
+      }
+    );
+  }
 }
