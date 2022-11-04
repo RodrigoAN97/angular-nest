@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, EMPTY, map, Observable } from 'rxjs';
-import { ILogin, IRegister, IUserResponse } from './auth.types';
+import { ILogin, IRegister } from './auth.types';
 
 @Injectable({
   providedIn: 'root',
