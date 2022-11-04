@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
 import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
-import { UpdateResult } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { TodoService } from './todo.service';
 
