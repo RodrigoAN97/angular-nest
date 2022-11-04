@@ -1,1 +1,27 @@
-<p>todo works!</p>
+<mat-accordion *ngIf="todos$ | async as todos">
+  <mat-expansion-panel *ngFor="let list of todos; let i = index">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <button mat-icon-button>
+          <mat-icon>list</mat-icon>
+        </button>
+      </mat-panel-title>
+      <mat-panel-description> List number {{ i + 1 }} </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="body">
+      <div>
+        <p *ngFor="let todo of list.todos">
+          {{ todo }}
+        </p>
+      </div>
+      <div class="action">
+        <button mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

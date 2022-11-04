@@ -1,0 +1,16 @@
+:host {
+  width: 70vw;
+  padding: 2rem 0;
+
+  .body {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .action {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

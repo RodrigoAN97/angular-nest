@@ -7,6 +7,7 @@ import { ILogin, IRegister } from './auth.types';
   providedIn: 'root',
 })
 export class AuthService {
+  token!: string;
   constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(loginPayload: ILogin) {
@@ -28,11 +29,10 @@ export class AuthService {
 
   validateUser() {
     const stored = localStorage.getItem('todo_user') as string;
-    const token = stored ? JSON.parse(stored).token : {};
-    console.log(token, 'token');
+    this.token = stored ? JSON.parse(stored).token : {};
 
     return this.httpClient.get(`http://localhost:3000/api/user`, {
-      headers: { authorization: `token ${token}` },
+      headers: { authorization: `token ${this.token}` },
     });
   }
 }
