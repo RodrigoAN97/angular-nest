@@ -1,5 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
@@ -10,6 +18,7 @@ import { ITodoResponse } from './todos.types';
   styleUrls: ['./todo.component.scss'],
 })
 export class TodoComponent implements OnInit {
+  private destroyed$: Subject<void> = new Subject();
   todos$: Observable<ITodoResponse[]>;
   newItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(
@@ -24,18 +33,25 @@ export class TodoComponent implements OnInit {
   }
 
   addNew(listId: number, value: string, todos: string[]) {
-    const updated$ = this.todoService.updateTodos(listId, [...todos, value]);
-    this.todos$ = combineLatest([this.todos$, updated$]).pipe(
-      map(([todos, updated]) => {
-        return todos.map((list) => {
-          if (list.id === updated.id) {
-            return updated;
-          }
-          return list;
-        });
-      })
-    );
+    this.todoService
+      .updateTodos(listId, [...todos, value])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          todos.push(value);
+          this.newItem.next(false);
+          this.snackBarService.success('New item added!');
+        },
+        error: (err: HttpErrorResponse) => {
+          this.snackBarService.error(err.error.message);
+        },
+      });
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+  }
 }
