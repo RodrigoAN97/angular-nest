@@ -72,11 +72,7 @@ export class TodoComponent implements OnInit {
   }
 
   addNewList() {
-    const newList = this.todoService.addNewList();
-
-    this.todos$ = combineLatest([this.todos$, newList]).pipe(
-      map(([todos, newList]) => [...todos, newList])
-    );
+    this.todos$ =this.todoService.addNewList()
   }
 
   deleteList(id: number) {

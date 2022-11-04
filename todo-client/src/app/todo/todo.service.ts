@@ -34,7 +34,7 @@ export class TodoService {
   }
 
   addNewList() {
-    return this.httpClient.post<ITodoResponse>(
+    return this.httpClient.post<ITodoResponse[]>(
       `http://localhost:3000/api/todos`,
       { todos: { todos: [] } },
       {
