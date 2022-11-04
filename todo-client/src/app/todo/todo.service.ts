@@ -42,4 +42,13 @@ export class TodoService {
       }
     );
   }
+
+  deleteList(id:number) {
+    return this.httpClient.delete<ITodoResponse[]>(
+      `http://localhost:3000/api/todos/${id}`,
+      {
+        headers: { authorization: `token ${this.authService.token}` },
+      }
+    );
+  }
 }

@@ -73,10 +73,14 @@ export class TodoComponent implements OnInit {
 
   addNewList() {
     const newList = this.todoService.addNewList();
-    
+
     this.todos$ = combineLatest([this.todos$, newList]).pipe(
       map(([todos, newList]) => [...todos, newList])
     );
+  }
+
+  deleteList(id: number) {
+    this.todos$ = this.todoService.deleteList(id);
   }
 
   ngOnInit(): void {}
