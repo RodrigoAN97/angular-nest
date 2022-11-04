@@ -5,17 +5,22 @@ import {
   RouterStateSnapshot,
   Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { AuthService } from './auth/auth.service';
 import { IUserResponse } from './auth/auth.types';
+import { SnackBarService } from './services/snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   tokenStarted = false;
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private snackbarService: SnackBarService
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -28,8 +33,18 @@ export class AuthGuard implements CanActivate {
         if (authenticated) {
           return true;
         }
+        this.notLoggedIn();
         return false;
+      }),
+      catchError(() => {
+        this.notLoggedIn();
+        return of(false);
       })
     );
+  }
+
+  notLoggedIn() {
+    this.router.navigate(['/auth']);
+    this.snackbarService.action('TYPE YOUR CREDENTIALS', 'LOGGED OUT');
   }
 }

@@ -14,4 +14,8 @@ export class SnackBarService {
   error(message: string) {
     this._snackBar.open(message, 'ERROR', { duration: 3000 });
   }
+
+  action(message: string, action: string) {
+    this._snackBar.open(message, action, { duration: 3000 });
+  }
 }
