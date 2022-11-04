@@ -19,11 +19,12 @@ export class TodoService {
   async setTodoList(
     setTodosDto: UpsertTodosDto,
     user: UserEntity,
-  ): Promise<TodoEntity> {
+  ): Promise<TodoEntity[]> {
     const todoList = new TodoEntity();
     Object.assign(todoList, setTodosDto);
     todoList.user = user;
-    return await this.todoRepository.save(todoList);
+    await this.todoRepository.save(todoList);
+    return this.getAllTodoLists(user.id);
   }
 
   async deleteTodoList(userId: number, listId: number): Promise<TodoEntity[]> {

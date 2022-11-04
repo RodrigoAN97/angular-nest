@@ -27,7 +27,7 @@ export class TodoController {
   async setTodoList(
     @Body('todos') setTodosDto: UpsertTodosDto,
     @Req() request: ExpressRequest,
-  ): Promise<TodoEntity> {
+  ): Promise<TodoEntity[]> {
     return await this.todoService.setTodoList(setTodosDto, request.user);
   }
 
