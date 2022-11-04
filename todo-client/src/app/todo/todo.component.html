@@ -10,15 +10,26 @@
     </mat-expansion-panel-header>
     <div class="body">
       <div>
-        <p *ngFor="let todo of list.todos">
+        <p *ngFor="let todo of list.todos; let itemIndex = index">
           {{ todo }}
+          <button (click)="deleteItem(list.id, itemIndex, list.todos)" mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
         </p>
         <ng-container *ngIf="newItem | async">
           <mat-form-field appearance="fill">
             <mat-label>New Item</mat-label>
-            <input matInput type="text" (keyup.enter)="addNew(list.id, newTodo.value, list.todos)" #newTodo />
+            <input
+              matInput
+              type="text"
+              (keyup.enter)="addNew(list.id, newTodo.value, list.todos)"
+              #newTodo
+            />
           </mat-form-field>
-          <button (click)="addNew(list.id, newTodo.value, list.todos)" mat-icon-button>
+          <button
+            (click)="addNew(list.id, newTodo.value, list.todos)"
+            mat-icon-button
+          >
             <mat-icon>check</mat-icon>
           </button>
         </ng-container>

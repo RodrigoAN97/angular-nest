@@ -49,6 +49,25 @@ export class TodoComponent implements OnInit {
       });
   }
 
+  deleteItem(listId: number, index: number, todos: string[]) {
+    const item = todos[index];
+
+    this.todoService
+      .updateTodos(listId, todos.filter((_, i) => i !== index))
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          todos.splice(index, 1);
+          this.newItem.next(false);
+          this.snackBarService.success(`${item} removed!`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.snackBarService.error(err.error.message);
+        },
+      });
+  }
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
