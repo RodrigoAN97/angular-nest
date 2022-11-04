@@ -1,14 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {
   BehaviorSubject,
   combineLatest,
+  lastValueFrom,
   map,
   Observable,
   Subject,
   takeUntil,
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
@@ -25,7 +28,8 @@ export class TodoComponent implements OnInit {
   constructor(
     private todoService: TodoService,
     private snackBarService: SnackBarService,
-    public authService: AuthService
+    public authService: AuthService,
+    public dialog: MatDialog
   ) {
     this.todos$ = this.getTodos();
   }
@@ -51,34 +55,57 @@ export class TodoComponent implements OnInit {
       });
   }
 
-  deleteItem(listId: number, index: number, todos: string[]) {
+  async deleteItem(listId: number, index: number, todos: string[]) {
     const item = todos[index];
+    const confirm = await this.confirmDialog(
+      `Do you want to delete this item (${item})?`
+    );
 
-    this.todoService
-      .updateTodos(
-        listId,
-        todos.filter((_, i) => i !== index)
-      )
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          todos.splice(index, 1);
-          this.newItem.next(false);
-          this.snackBarService.success(`${item} removed!`);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.snackBarService.error(err.error.message);
-        },
-      });
+    if (confirm) {
+      this.todoService
+        .updateTodos(
+          listId,
+          todos.filter((_, i) => i !== index)
+        )
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            todos.splice(index, 1);
+            this.newItem.next(false);
+            this.snackBarService.success(`${item} removed!`);
+          },
+          error: (err: HttpErrorResponse) => {
+            this.snackBarService.error(err.error.message);
+          },
+        });
+    }
   }
 
-  addNewList() {
-    this.todos$ =this.todoService.addNewList()
+  async addNewList() {
+    const confirm = await this.confirmDialog('Do you want to add a new list?');
+    if (confirm) {
+      this.todos$ = this.todoService.addNewList();
+    }
   }
 
-  deleteList(id: number) {
-    this.todos$ = this.todoService.deleteList(id);
+  async deleteList(id: number) {
+    const confirm = await this.confirmDialog(
+      'Do you want to delete this list?'
+    );
+    if (confirm) {
+      this.todos$ = this.todoService.deleteList(id);
+    }
+  }
+
+  confirmDialog(message: string) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      width: '350px',
+      disableClose: true,
+      data: { title: 'Are you sure?', message },
+    });
+
+    return lastValueFrom(dialogRef.afterClosed());
   }
 
   ngOnInit(): void {}

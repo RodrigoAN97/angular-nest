@@ -11,9 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmComponent } from './dialogs/confirm/confirm.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ConfirmComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,6 +29,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTooltipModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
+    MatDialogModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
