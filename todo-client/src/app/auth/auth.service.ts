@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ILogin, IRegister } from './auth.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   login(loginPayload: ILogin) {
     return this.httpClient.post(`http://localhost:3000/api/user/login`, {
@@ -21,6 +22,7 @@ export class AuthService {
   }
 
   logout() {
+    this.router.navigate(['/auth']);
     localStorage.setItem('todo_user', '');
   }
 
