@@ -11,10 +11,13 @@
     <div class="body">
       <div>
         <p *ngFor="let todo of list.todos; let itemIndex = index">
-          {{ todo }}
-          <button (click)="deleteItem(list.id, itemIndex, list.todos)" mat-icon-button>
+          <button
+            (click)="deleteItem(list.id, itemIndex, list.todos)"
+            mat-icon-button
+          >
             <mat-icon>delete</mat-icon>
           </button>
+          {{ todo }}
         </p>
         <ng-container *ngIf="newItem | async">
           <mat-form-field appearance="fill">
