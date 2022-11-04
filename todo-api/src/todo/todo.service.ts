@@ -43,7 +43,7 @@ export class TodoService {
     userId: number,
     listId: number,
     upsertTodosDto: UpsertTodosDto,
-  ): Promise<UpdateResult> {
+  ): Promise<TodoEntity> {
     const list = await this.todoRepository.findOne({
       where: { user: { id: userId }, id: listId },
     });
@@ -53,10 +53,11 @@ export class TodoService {
     }
 
     list.todos = upsertTodosDto.todos;
-    return await this.todoRepository
+    await this.todoRepository
       .createQueryBuilder()
       .update(list)
       .where('id = :id', { id: listId })
       .execute();
+    return list;
   }
 }

@@ -44,7 +44,7 @@ export class TodoController {
     @Req() request: ExpressRequest,
     @Param('id') id: string,
     @Body('todos') upsertTodosDto: UpsertTodosDto,
-  ): Promise<UpdateResult> {
+  ): Promise<TodoEntity> {
     return await this.todoService.updateTodoList(
       request.user.id,
       Number(id),
