@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
@@ -11,8 +11,11 @@ import { ITodoResponse } from './todos.types';
 })
 export class TodoComponent implements OnInit {
   todos$: Observable<ITodoResponse[]>;
-  newItem:BehaviorSubject<boolean> = new BehaviorSubject(false);
-  constructor(private todoService: TodoService, private snackBarService: SnackBarService) {
+  newItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  constructor(
+    private todoService: TodoService,
+    private snackBarService: SnackBarService
+  ) {
     this.todos$ = this.getTodos();
   }
 
@@ -20,19 +23,18 @@ export class TodoComponent implements OnInit {
     return this.todoService.getTodos();
   }
 
-  addNew(lisId: number, value: string, todos: string[]) {
-    this.todoService.updateTodos(lisId, [...todos, value]).subscribe({
-      next: (res) => {
-        // todos.push(value);
-        console.log(res);
-        this.newItem.next(false);
-        this.snackBarService.success('New Item added!');
-      },
-      error: (err) => {
-        console.log(err);
-        this.snackBarService.error(err.error.message);
-      },
-    });
+  addNew(listId: number, value: string, todos: string[]) {
+    const updated$ = this.todoService.updateTodos(listId, [...todos, value]);
+    this.todos$ = combineLatest([this.todos$, updated$]).pipe(
+      map(([todos, updated]) => {
+        return todos.map((list) => {
+          if (list.id === updated.id) {
+            return updated;
+          }
+          return list;
+        });
+      })
+    );
   }
 
   ngOnInit(): void {}

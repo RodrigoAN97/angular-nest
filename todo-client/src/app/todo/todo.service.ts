@@ -24,7 +24,7 @@ export class TodoService {
   }
 
   updateTodos(id: number, todos: string[]) {
-    return this.httpClient.put(
+    return this.httpClient.put<ITodoResponse>(
       `http://localhost:3000/api/todos/${id}`,
       { todos: { todos } },
       {
