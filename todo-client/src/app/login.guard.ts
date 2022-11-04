@@ -14,7 +14,7 @@ import { SnackBarService } from './services/snack-bar.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -30,20 +30,14 @@ export class AuthGuard implements CanActivate {
         const res = response as IUserResponse;
         const authenticated = res.user.token && res.user.id && res.user.email;
         if (authenticated) {
-          return true;
+          this.router.navigate(['/']);
+          return false;
         }
-        this.notLoggedIn();
-        return false;
+        return true;
       }),
       catchError(() => {
-        this.notLoggedIn();
-        return of(false);
+        return of(true);
       })
     );
-  }
-
-  notLoggedIn() {
-    this.router.navigate(['/auth']);
-    this.snackbarService.action('TYPE YOUR CREDENTIALS', 'LOGGED OUT');
   }
 }
