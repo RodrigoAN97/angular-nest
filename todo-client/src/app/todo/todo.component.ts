@@ -7,16 +7,21 @@ import {
   lastValueFrom,
   map,
   Observable,
-  of,
   Subject,
   takeUntil,
-  tap,
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
+
+interface IUpdate {
+  addList?: ITodoResponse;
+  deleteList?: ITodoResponse;
+  addItem?: { listId: number; value: string };
+  deleteItem?: { listId: number; index: number };
+}
 
 @Component({
   selector: 'app-todo',
@@ -26,10 +31,7 @@ import { ITodoResponse } from './todos.types';
 export class TodoComponent implements OnInit {
   private destroyed$: Subject<void> = new Subject();
   todos$: Observable<ITodoResponse[]>;
-  update$: BehaviorSubject<{
-    addList?: ITodoResponse;
-    deleteList?: ITodoResponse;
-  }> = new BehaviorSubject<{ addList?: ITodoResponse; deleteList?: ITodoResponse }>({});
+  update$: BehaviorSubject<IUpdate> = new BehaviorSubject<IUpdate>({});
   newItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(
     private todoService: TodoService,
@@ -39,10 +41,28 @@ export class TodoComponent implements OnInit {
   ) {
     this.todos$ = combineLatest([this.getTodos(), this.update$]).pipe(
       map(([todos, update]) => {
-        if (update.deleteList) {
-          todos = todos.filter((todo) => todo.id !== update.deleteList?.id);
-        }
-        else if (update.addList) {
+        if (update.addItem) {
+          todos = todos.map((todo) => {
+            if (todo.id === update.addItem?.listId) {
+              todo.todos.push(update.addItem.value);
+            }
+            return todo;
+          });
+        } else if (update.deleteItem) {
+          todos = todos.map((todo) => {
+            if (todo.id === update.deleteItem?.listId) {
+              todo.todos.splice(update.deleteItem.index, 1);
+            }
+            return todo;
+          });
+        } else if (update.deleteList) {
+          const rmvIndex = todos
+            .map((todo) => {
+              return todo.id;
+            })
+            .indexOf(update.deleteList.id);
+          todos.splice(rmvIndex, 1);
+        } else if (update.addList) {
           todos.push(update.addList);
         }
         return todos;
@@ -54,14 +74,14 @@ export class TodoComponent implements OnInit {
     return this.todoService.getTodos();
   }
 
-  addNew(listId: number, value: string, todos: string[]) {
+  addNewItem(listId: number, value: string, todos: string[]) {
     this.todoService
       .updateTodos(listId, [...todos, value])
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
           console.log(res);
-          todos.push(value);
+          this.update$.next({ addItem: { listId, value } });
           this.newItem.next(false);
           this.snackBarService.success('New item added!');
         },
@@ -87,7 +107,7 @@ export class TodoComponent implements OnInit {
         .subscribe({
           next: (res) => {
             console.log(res);
-            todos.splice(index, 1);
+            this.update$.next({ deleteItem: { listId, index } });
             this.newItem.next(false);
             this.snackBarService.success(`${item} removed!`);
           },
@@ -107,6 +127,7 @@ export class TodoComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.update$.next({ addList: res });
+            this.snackBarService.success('List added!');
           },
           error: (err: HttpErrorResponse) => {
             this.snackBarService.error(err.error.message);
@@ -126,6 +147,7 @@ export class TodoComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this.update$.next({ deleteList: res });
+            this.snackBarService.success('List deleted!');
           },
           error: (err: HttpErrorResponse) => {
             this.snackBarService.error(err.error.message);
@@ -144,7 +166,9 @@ export class TodoComponent implements OnInit {
     return lastValueFrom(dialogRef.afterClosed());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.update$.subscribe((x) => console.log(x));
+  }
 
   ngOnDestroy(): void {
     this.destroyed$.next();

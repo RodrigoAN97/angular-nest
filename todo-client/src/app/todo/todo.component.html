@@ -31,12 +31,12 @@
             <input
               matInput
               type="text"
-              (keyup.enter)="addNew(list.id, newTodo.value, list.todos)"
+              (keyup.enter)="addNewItem(list.id, newTodo.value, list.todos)"
               #newTodo
             />
           </mat-form-field>
           <button
-            (click)="addNew(list.id, newTodo.value, list.todos)"
+            (click)="addNewItem(list.id, newTodo.value, list.todos)"
             mat-icon-button
           >
             <mat-icon>check</mat-icon>
