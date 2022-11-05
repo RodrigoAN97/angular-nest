@@ -32,8 +32,8 @@ export class TodoService {
     );
   }
 
-  addNewList(): Observable<ITodoResponse[]> {
-    return this.httpClient.post<ITodoResponse[]>(
+  addNewList(): Observable<ITodoResponse> {
+    return this.httpClient.post<ITodoResponse>(
       `http://localhost:3000/api/todos`,
       { todos: { todos: [] } },
       {
@@ -42,8 +42,8 @@ export class TodoService {
     );
   }
 
-  deleteList(id: number): Observable<ITodoResponse[]> {
-    return this.httpClient.delete<ITodoResponse[]>(
+  deleteList(id: number): Observable<ITodoResponse> {
+    return this.httpClient.delete<ITodoResponse>(
       `http://localhost:3000/api/todos/${id}`,
       {
         headers: { authorization: `token ${this.authService.user.token}` },

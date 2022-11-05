@@ -7,8 +7,10 @@ import {
   lastValueFrom,
   map,
   Observable,
+  of,
   Subject,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
@@ -24,6 +26,10 @@ import { ITodoResponse } from './todos.types';
 export class TodoComponent implements OnInit {
   private destroyed$: Subject<void> = new Subject();
   todos$: Observable<ITodoResponse[]>;
+  update$: BehaviorSubject<{
+    addList?: ITodoResponse;
+    deleteList?: ITodoResponse;
+  }> = new BehaviorSubject<{ addList?: ITodoResponse; deleteList?: ITodoResponse }>({});
   newItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(
     private todoService: TodoService,
@@ -31,7 +37,17 @@ export class TodoComponent implements OnInit {
     public authService: AuthService,
     public dialog: MatDialog
   ) {
-    this.todos$ = this.getTodos();
+    this.todos$ = combineLatest([this.getTodos(), this.update$]).pipe(
+      map(([todos, update]) => {
+        if (update.deleteList) {
+          todos = todos.filter((todo) => todo.id !== update.deleteList?.id);
+        }
+        else if (update.addList) {
+          todos.push(update.addList);
+        }
+        return todos;
+      })
+    );
   }
 
   getTodos(): Observable<ITodoResponse[]> {
@@ -85,7 +101,17 @@ export class TodoComponent implements OnInit {
   async addNewList() {
     const confirm = await this.confirmDialog('Do you want to add a new list?');
     if (confirm) {
-      this.todos$ = this.todoService.addNewList();
+      this.todoService
+        .addNewList()
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: (res) => {
+            this.update$.next({ addList: res });
+          },
+          error: (err: HttpErrorResponse) => {
+            this.snackBarService.error(err.error.message);
+          },
+        });
     }
   }
 
@@ -94,7 +120,17 @@ export class TodoComponent implements OnInit {
       'Do you want to delete this list?'
     );
     if (confirm) {
-      this.todos$ = this.todoService.deleteList(id);
+      this.todoService
+        .deleteList(id)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe({
+          next: (res) => {
+            this.update$.next({ deleteList: res });
+          },
+          error: (err: HttpErrorResponse) => {
+            this.snackBarService.error(err.error.message);
+          },
+        });
     }
   }
 
