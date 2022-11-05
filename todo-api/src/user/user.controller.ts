@@ -7,12 +7,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { RegisterUserDto } from 'src/Dtos/registerUser.dto';
-import { LoginUserDto } from 'src/Dtos/loginUser.dto';
+import { RegisterUserDto } from '../Dtos/registerUser.dto';
+import { LoginUserDto } from '../Dtos/loginUser.dto';
 import { UserService } from './user.service';
 import { IUserResponse } from '../interfaces/user.interfaces';
-import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
-import { AllowUnauthorizedRequest } from 'src/decorators/allowUnauthorizedRequest';
+import { ExpressRequest } from '../interfaces/expressRequest.interface';
+import { AllowUnauthorizedRequest } from '../decorators/allowUnauthorizedRequest';
 
 @Controller('api/user')
 export class UserController {

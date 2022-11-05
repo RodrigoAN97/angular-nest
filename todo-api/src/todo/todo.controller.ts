@@ -8,8 +8,8 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
-import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
-import { ExpressRequest } from 'src/interfaces/expressRequest.interface';
+import { UpsertTodosDto } from '../Dtos/upsertTodos.dto';
+import { ExpressRequest } from '../interfaces/expressRequest.interface';
 import { TodoEntity } from './todo.entity';
 import { TodoService } from './todo.service';
 

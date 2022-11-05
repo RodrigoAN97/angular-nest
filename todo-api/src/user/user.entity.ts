@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { hash } from 'bcrypt';
-import { TodoEntity } from 'src/todo/todo.entity';
+import { TodoEntity } from '../todo/todo.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {

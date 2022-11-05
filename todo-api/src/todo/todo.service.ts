@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TodoEntity } from './todo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpsertTodosDto } from 'src/Dtos/upsertTodos.dto';
-import { UserEntity } from 'src/user/user.entity';
+import { UpsertTodosDto } from '../Dtos/upsertTodos.dto';
+import { UserEntity } from '../user/user.entity';
 
 @Injectable()
 export class TodoService {

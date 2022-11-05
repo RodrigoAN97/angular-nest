@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { RegisterUserDto } from 'src/Dtos/registerUser.dto';
+import { RegisterUserDto } from '../Dtos/registerUser.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { IUserResponse } from '../interfaces/user.interfaces';
-import { LoginUserDto } from 'src/Dtos/loginUser.dto';
+import { LoginUserDto } from '../Dtos/loginUser.dto';
 import { compare } from 'bcrypt';
 
 @Injectable()
