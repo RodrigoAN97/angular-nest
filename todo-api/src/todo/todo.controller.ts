@@ -26,7 +26,7 @@ export class TodoController {
   async setTodoList(
     @Body('todos') setTodosDto: UpsertTodosDto,
     @Req() request: ExpressRequest,
-  ): Promise<TodoEntity[]> {
+  ): Promise<TodoEntity> {
     return await this.todoService.setTodoList(setTodosDto, request.user);
   }
 
@@ -34,7 +34,7 @@ export class TodoController {
   async deleteTodoList(
     @Req() request: ExpressRequest,
     @Param('id') id: string,
-  ): Promise<TodoEntity[]> {
+  ): Promise<TodoEntity> {
     return await this.todoService.deleteTodoList(request.user.id, Number(id));
   }
 

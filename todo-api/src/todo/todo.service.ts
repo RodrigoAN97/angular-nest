@@ -19,18 +19,19 @@ export class TodoService {
   async setTodoList(
     setTodosDto: UpsertTodosDto,
     user: UserEntity,
-  ): Promise<TodoEntity[]> {
+  ): Promise<TodoEntity> {
     const todoList = new TodoEntity();
     Object.assign(todoList, setTodosDto);
     todoList.user = user;
-    await this.todoRepository.save(todoList);
-    return this.getAllTodoLists(user.id);
+    return await this.todoRepository.save(todoList);
+    // return this.getAllTodoLists(usxer.id);
   }
 
-  async deleteTodoList(userId: number, listId: number): Promise<TodoEntity[]> {
+  async deleteTodoList(userId: number, listId: number): Promise<TodoEntity> {
     const list = await this.todoRepository.findOne({
       where: { user: { id: userId }, id: listId },
     });
+    const oldList = { ...list };
 
     console.log(list, userId);
     if (!list) {
@@ -38,7 +39,8 @@ export class TodoService {
     }
 
     await this.todoRepository.remove(list);
-    return this.getAllTodoLists(userId);
+    return oldList;
+    // return this.getAllTodoLists(userId);
   }
 
   async updateTodoList(
