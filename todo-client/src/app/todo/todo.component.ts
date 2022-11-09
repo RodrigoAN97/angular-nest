@@ -166,9 +166,7 @@ export class TodoComponent implements OnInit {
     return lastValueFrom(dialogRef.afterClosed());
   }
 
-  ngOnInit(): void {
-    this.update$.subscribe((x) => console.log(x));
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroyed$.next();
