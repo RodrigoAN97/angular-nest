@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
+import { ApiService } from '../services/api.service';
 import { ITodoResponse } from './todos.types';
 
 @Injectable({
@@ -9,45 +10,22 @@ import { ITodoResponse } from './todos.types';
 })
 export class TodoService {
   constructor(
-    private httpClient: HttpClient,
-    private authService: AuthService
+    private apiService: ApiService
   ) {}
 
   getTodos(): Observable<ITodoResponse[]> {
-    return this.httpClient.get<ITodoResponse[]>(
-      `http://localhost:3000/api/todos`,
-      {
-        headers: { authorization: `token ${this.authService.user.token}` },
-      }
-    );
+    return this.apiService.get('todos');
   }
 
   updateTodos(id: number, todos: string[]): Observable<ITodoResponse> {
-    return this.httpClient.put<ITodoResponse>(
-      `http://localhost:3000/api/todos/${id}`,
-      { todos: { todos } },
-      {
-        headers: { authorization: `token ${this.authService.user.token}` },
-      }
-    );
+    return this.apiService.put(`todos/${id}`, { todos: { todos } });
   }
 
   addNewList(): Observable<ITodoResponse> {
-    return this.httpClient.post<ITodoResponse>(
-      `http://localhost:3000/api/todos`,
-      { todos: { todos: [] } },
-      {
-        headers: { authorization: `token ${this.authService.user.token}` },
-      }
-    );
+    return this.apiService.post('todos', { todos: { todos: [] } });
   }
 
   deleteList(id: number): Observable<ITodoResponse> {
-    return this.httpClient.delete<ITodoResponse>(
-      `http://localhost:3000/api/todos/${id}`,
-      {
-        headers: { authorization: `token ${this.authService.user.token}` },
-      }
-    );
+    return this.apiService.delete(`todos/${id}`);
   }
 }

@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { ApiService } from '../services/api.service';
 import { SnackBarService } from '../services/snack-bar.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
@@ -36,7 +37,7 @@ export class TodoComponent implements OnInit {
   constructor(
     private todoService: TodoService,
     private snackBarService: SnackBarService,
-    public authService: AuthService,
+    public apiService: ApiService,
     public dialog: MatDialog
   ) {
     this.todos$ = combineLatest([this.getTodos(), this.update$]).pipe(

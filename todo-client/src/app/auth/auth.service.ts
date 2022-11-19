@@ -1,25 +1,20 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ILogin, IRegister, IUser } from './auth.types';
+import { ApiService } from '../services/api.service';
+import { ILogin, IRegister } from './auth.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user!: IUser;
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   login(loginPayload: ILogin) {
-    return this.httpClient.post(`http://localhost:3000/api/user/login`, {
-      user: loginPayload,
-    });
+    return this.apiService.post('user/login', loginPayload, true);
   }
 
   register(registerPayload: IRegister) {
-    return this.httpClient.post(`http://localhost:3000/api/user/register`, {
-      user: registerPayload,
-    });
+    return this.apiService.post('user/register', registerPayload, true);
   }
 
   logout() {
@@ -28,11 +23,6 @@ export class AuthService {
   }
 
   validateUser() {
-    const stored = localStorage.getItem('todo_user') as string;
-    this.user = stored ? JSON.parse(stored) : {};
-
-    return this.httpClient.get(`http://localhost:3000/api/user`, {
-      headers: { authorization: `token ${this.user.token}` },
-    });
+    return this.apiService.get('user');
   }
 }
