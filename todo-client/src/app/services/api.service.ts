@@ -8,13 +8,11 @@ import { IUser } from '../auth/auth.types';
 })
 export class ApiService {
   private endpoint = 'http://localhost:3000/api/';
-  user?: IUser;
   constructor(private httpClient: HttpClient) {}
 
   getUser() {
     const stored = localStorage.getItem('todo_user') as string;
-    this.user = stored ? JSON.parse(stored) : {};
-    return this.user;
+    return stored ? JSON.parse(stored) : {};
   }
 
   setUser(user?: IUser) {
@@ -23,13 +21,13 @@ export class ApiService {
     } else {
       localStorage.setItem('todo_user', JSON.stringify(user));
     }
-    this.user = user;
   }
 
   get(route: string, allowUnauthorized?: boolean): Observable<any> {
+    const user = this.getUser();
     return this.httpClient.get(`${this.endpoint}${route}`, {
       headers: {
-        authorization: allowUnauthorized ? '' : `token ${this.user?.token}`,
+        authorization: allowUnauthorized ? '' : `token ${user.token}`,
       },
     });
   }
@@ -39,9 +37,10 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
+    const user = this.getUser();
     return this.httpClient.post(`${this.endpoint}${route}`, payload, {
       headers: {
-        authorization: allowUnauthorized ? '' : `token ${this.user?.token}`,
+        authorization: allowUnauthorized ? '' : `token ${user.token}`,
       },
     });
   }
@@ -51,17 +50,19 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
+    const user = this.getUser();
     return this.httpClient.put(`${this.endpoint}${route}`, payload, {
       headers: {
-        authorization: allowUnauthorized ? '' : `token ${this.user?.token}`,
+        authorization: allowUnauthorized ? '' : `token ${user.token}`,
       },
     });
   }
 
   delete(route: string, allowUnauthorized?: boolean): Observable<any> {
+    const user = this.getUser();
     return this.httpClient.delete(`${this.endpoint}${route}`, {
       headers: {
-        authorization: allowUnauthorized ? '' : `token ${this.user?.token}`,
+        authorization: allowUnauthorized ? '' : `token ${user.token}`,
       },
     });
   }
