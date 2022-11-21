@@ -14,7 +14,11 @@ export class AuthService {
   }
 
   register(registerPayload: IRegister) {
-    return this.apiService.post('user/register', registerPayload, true);
+    return this.apiService.post(
+      'user/register',
+      { user: registerPayload },
+      true
+    );
   }
 
   logout() {
