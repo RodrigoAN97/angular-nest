@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { ApiService } from '../services/api.service';
 import { SnackBarService } from '../services/snack-bar.service';
 import { AuthService } from './auth.service';
 import { IUserResponse } from './auth.types';
@@ -28,7 +29,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {}
 
   ngOnInit(): void {}
@@ -43,7 +45,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           const response = res as IUserResponse;
-          localStorage.setItem('todo_user', JSON.stringify(response.user));
+          this.apiService.setUser(response.user);
           this.loggedInSuccess();
         },
         error: (err: HttpErrorResponse) => {

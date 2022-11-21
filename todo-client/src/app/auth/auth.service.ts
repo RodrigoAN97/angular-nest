@@ -10,7 +10,7 @@ export class AuthService {
   constructor(private router: Router, private apiService: ApiService) {}
 
   login(loginPayload: ILogin) {
-    return this.apiService.post('user/login', loginPayload, true);
+    return this.apiService.post('user/login', { user: loginPayload }, true);
   }
 
   register(registerPayload: IRegister) {
@@ -18,8 +18,8 @@ export class AuthService {
   }
 
   logout() {
+    this.apiService.setUser(undefined);
     this.router.navigate(['/auth']);
-    localStorage.setItem('todo_user', '');
   }
 
   validateUser() {
