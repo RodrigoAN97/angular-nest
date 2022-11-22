@@ -10,10 +10,9 @@ import {
   Subject,
   takeUntil,
 } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
-import { ApiService } from '../services/api.service';
 import { SnackBarService } from '../services/snack-bar.service';
+import { StorageService } from '../services/storage.service';
 import { TodoService } from './todo.service';
 import { ITodoResponse } from './todos.types';
 
@@ -37,7 +36,7 @@ export class TodoComponent implements OnInit {
   constructor(
     private todoService: TodoService,
     private snackBarService: SnackBarService,
-    public apiService: ApiService,
+    public storageService: StorageService,
     public dialog: MatDialog
   ) {
     this.todos$ = combineLatest([this.getTodos(), this.update$]).pipe(

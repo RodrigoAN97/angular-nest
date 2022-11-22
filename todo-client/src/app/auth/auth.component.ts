@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { SnackBarService } from '../services/snack-bar.service';
+import { StorageService } from '../services/storage.service';
 import { AuthService } from './auth.service';
 import { IUserResponse } from './auth.types';
 
@@ -30,7 +31,8 @@ export class AuthComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private snackBarService: SnackBarService,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit(): void {}
@@ -45,7 +47,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           const response = res as IUserResponse;
-          this.apiService.setUser(response.user);
+          this.storageService.setUser(response.user);
           this.loggedInSuccess();
         },
         error: (err: HttpErrorResponse) => {
@@ -65,7 +67,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           const response = res as IUserResponse;
-          this.apiService.setUser(response.user);
+          this.storageService.setUser(response.user);
           this.loggedInSuccess();
         },
         error: (err: HttpErrorResponse) => {

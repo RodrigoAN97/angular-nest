@@ -2,29 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IUser } from '../auth/auth.types';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private endpoint = 'http://localhost:3000/api/';
-  constructor(private httpClient: HttpClient) {}
-
-  getUser() {
-    const stored = localStorage.getItem('todo_user') as string;
-    return stored ? JSON.parse(stored) : {};
-  }
-
-  setUser(user?: IUser) {
-    if (!user) {
-      localStorage.setItem('todo_user', '');
-    } else {
-      localStorage.setItem('todo_user', JSON.stringify(user));
-    }
-  }
+  constructor(private httpClient: HttpClient, private storageService: StorageService) {}
 
   get(route: string, allowUnauthorized?: boolean): Observable<any> {
-    const user = this.getUser();
+    const user = this.storageService.getUser();
     return this.httpClient.get(`${this.endpoint}${route}`, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -37,7 +25,7 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
-    const user = this.getUser();
+    const user = this.storageService.getUser();
     return this.httpClient.post(`${this.endpoint}${route}`, payload, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -50,7 +38,7 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
-    const user = this.getUser();
+    const user = this.storageService.getUser();
     return this.httpClient.put(`${this.endpoint}${route}`, payload, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -59,7 +47,7 @@ export class ApiService {
   }
 
   delete(route: string, allowUnauthorized?: boolean): Observable<any> {
-    const user = this.getUser();
+    const user = this.storageService.getUser();
     return this.httpClient.delete(`${this.endpoint}${route}`, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,

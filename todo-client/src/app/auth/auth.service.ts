@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { StorageService } from '../services/storage.service';
 import { ILogin, IRegister } from './auth.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(private router: Router, private apiService: ApiService, private storageService: StorageService) {}
 
   login(loginPayload: ILogin) {
     return this.apiService.post('user/login', { user: loginPayload }, true);
@@ -22,7 +23,7 @@ export class AuthService {
   }
 
   logout() {
-    this.apiService.setUser(undefined);
+    this.storageService.setUser(undefined);
     this.router.navigate(['/auth']);
   }
 
