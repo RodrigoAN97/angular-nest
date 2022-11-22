@@ -12,7 +12,7 @@ export class ApiService {
   constructor(private httpClient: HttpClient, private storageService: StorageService) {}
 
   get(route: string, allowUnauthorized?: boolean): Observable<any> {
-    const user = this.storageService.getUser();
+    const user = this.storageService.user;
     return this.httpClient.get(`${this.endpoint}${route}`, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -25,7 +25,7 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
-    const user = this.storageService.getUser();
+    const user = this.storageService.user;
     return this.httpClient.post(`${this.endpoint}${route}`, payload, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -38,7 +38,7 @@ export class ApiService {
     payload: any,
     allowUnauthorized?: boolean
   ): Observable<any> {
-    const user = this.storageService.getUser();
+    const user = this.storageService.user;
     return this.httpClient.put(`${this.endpoint}${route}`, payload, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,
@@ -47,7 +47,7 @@ export class ApiService {
   }
 
   delete(route: string, allowUnauthorized?: boolean): Observable<any> {
-    const user = this.storageService.getUser();
+    const user = this.storageService.user;
     return this.httpClient.delete(`${this.endpoint}${route}`, {
       headers: {
         authorization: allowUnauthorized ? '' : `token ${user.token}`,

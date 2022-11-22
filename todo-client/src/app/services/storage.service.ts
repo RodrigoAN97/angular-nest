@@ -16,7 +16,7 @@ export class StorageService {
     }
   }
 
-  getUser() {
+  get user() {
     const stored = localStorage.getItem('todo_user') as string;
     return stored ? JSON.parse(stored) : {};
   }
