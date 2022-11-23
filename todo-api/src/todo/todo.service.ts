@@ -33,14 +33,12 @@ export class TodoService {
     });
     const oldList = { ...list };
 
-    console.log(list, userId);
     if (!list) {
       throw new HttpException('List not found', HttpStatus.NOT_FOUND);
     }
 
     await this.todoRepository.remove(list);
     return oldList;
-    // return this.getAllTodoLists(userId);
   }
 
   async updateTodoList(

@@ -80,7 +80,6 @@ export class TodoComponent implements OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.update$.next({ addItem: { listId, value } });
           this.newItem.next(false);
           this.snackBarService.success('New item added!');
@@ -106,7 +105,6 @@ export class TodoComponent implements OnInit {
         .pipe(takeUntil(this.destroyed$))
         .subscribe({
           next: (res) => {
-            console.log(res);
             this.update$.next({ deleteItem: { listId, index } });
             this.newItem.next(false);
             this.snackBarService.success(`${item} removed!`);
